@@ -20,32 +20,34 @@ app.use(express.static("public"))
 //----signup--------
 
 app.post("/signup", async (req, res) => {
-    const data = {
-      name: req.body.name,
-      name2: req.body.name2,
-      email: req.body.email,
-      password: req.body.password,
-      gender: req.body.gender,
-      date: req.body.date,
-      username: req.body.username,
-      phone: req.body.phone,
-    };
-    const extUser = await collaction.findOne({
-      username: data.username,
-      email: data.email,
-    });
-    if (extUser) {
-      res.send(
-        "User already exists. Please choose a different username and email."
-      );
-    }else{
-      const saltrounds = 10;
-      const hashPassword = await bcrypt.hash(data.password, saltrounds);
-      data.password = hashPassword;
-  
-      const userData = await collaction.insertMany(data);
-console.log(userData);
-// res.render("login")
+    try {
+        const data = {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          password: req.body.password,
+          gender: req.body.gender,
+          date: req.body.date,
+          username: req.body.username,
+          phone: req.body.phone,
+        };
+        const extUser = await collaction.findOne({
+          username: data.username,
+          email: data.email,
+        });
+        if (extUser) {
+          res.status(400).send({ message: "User already exists. Please choose a different username and email." });
+        }else{
+          const saltrounds = 10;
+          const hashPassword = await bcrypt.hash(data.password, saltrounds);
+          data.password = hashPassword;
+      
+          const userData = await collaction.insertOne(data);
+            console.log(userData);
+            // res.render("login")
+        }
+    } catch(err) {
+        res.status(500).send({ error: err });
     }
 })
 // ---------------------------------------------------------
@@ -53,22 +55,26 @@ console.log(userData);
 //login user
 app.post("/login",async(req,res)=>{
     try{
-        const check =await collaction.findOne({name:req.body.username})
+        const { username, password } = req.body; // destructuring
+        
+        const check =await collaction.findOne({ username: username })
         if(!check){
-           res.send("wrong Email")
-        }else{
-      //compare the hash password from the database with the plain taxt
-const isPasswordMatch=await bcrypt.compare(req.body.password,check.password)
-if(isPasswordMatch){
-
-// res.render('home')
-} else{
-    res.send("wrong Email")
-   }
-}
-}catch{
-    res.send("wrong Email erro")
-}
+           res.status(400).send({ error: "Username is incorrect" });
+        }
+        else {
+            //compare the hash password from the database with the plain taxt
+            const isPasswordMatch = await bcrypt.compare(req.body.password, check.password)
+            if(isPasswordMatch){
+                const userData = { username: check.username, firstName: check.firstName, lastName: check.lastName }
+                res.send(userData);
+            } else{
+                res.send({ error: "Incorrect password" })
+            }
+        }
+    }
+    catch(err) {
+        res.send({ error: err })
+    }
 })
 //------------------------------------------
 // Deploymant Access & Comprssion data
