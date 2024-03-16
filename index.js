@@ -28,7 +28,7 @@ app.post("/signup", async (req, res) => {
       username: req.body.username,
       phone: req.body.phone,
     };
-    console.log(data);
+
     const extUser = await collaction.findOne({
       username: data.username,
       email: data.email,
@@ -69,8 +69,9 @@ app.post("/login", async (req, res) => {
       if (isPasswordMatch) {
         const userData = {
           username: check.username,
-          firstName: check.firstName,
-          lastName: check.lastName,
+          FirstName: check.FirstName,
+          LastName: check.LastName,
+          BirthDay:check.LastName,
         };
         res.send(userData);
       } else {
