@@ -20,38 +20,44 @@ app.use(express.static("public"));
 
 app.post("/signup", async (req, res) => {
   try {
-      const userData = {
-          FirstName: req.body.FirstName,
-          LastName: req.body.LastName,
-          email: req.body.email,
-          password: req.body.password,
-          gender: req.body.gender,
-          BirthDate: req.body.BirthDate,
-          username: req.body.username,
-          phone: req.body.phone,
-      };
+    const userData = {
+      FirstName: req.body.FirstName,
+      LastName: req.body.LastName,
+      email: req.body.email,
+      password: req.body.password,
+      gender: req.body.gender,
+      BirthDate: req.body.BirthDate,
+      username: req.body.username,
+      phone: req.body.phone,
+    };
 
-      // Check if user already exists
-      const existingUser = await User.findOne({ username: userData.username, email: userData.email });
-      if (existingUser) {
-          return res.status(400).send({
-              message: "User already exists. Please choose a different username and email."
-          });
-      }
+    // Check if user already exists
+    const existingUser = await User.findOne({
+      username: userData.username,
+      email: userData.email,
+    });
+    if (existingUser) {
+      return res.status(400).send({
+        message:
+          "User already exists. Please choose a different username and email.",
+      });
+    }
 
-      // Hash password
-      const saltRounds = 10;
-      const hashPassword = await bcrypt.hash(userData.password, saltRounds);
-      userData.password = hashPassword;
+    // Hash password
+    const saltRounds = 10;
+    const hashPassword = await bcrypt.hash(userData.password, saltRounds);
+    userData.password = hashPassword;
 
-      // Create new user
-      const newUser = new User(userData);
-      await newUser.save();
+    // Create new user
+    const newUser = new User(userData);
+    await newUser.save();
 
-      res.status(201).send({ message: "User created successfully", user: newUser });
+    res
+      .status(201)
+      .send({ message: "User created successfully", user: newUser });
   } catch (err) {
-      console.error(err);
-      res.status(500).send({ error: "Server Error" });
+    console.error(err);
+    res.status(500).send({ error: "Server Error" });
   }
 });
 // ---------------------------------------------------------
@@ -82,10 +88,10 @@ app.post("/login", async (req, res) => {
       username: user.username,
       FirstName: user.FirstName,
       LastName: user.LastName,
-      BirthDay: user.BirthDay,
-      email:user.email,
-      gender:user.gender,
-      phone:user.phone,
+      BirthDate: user.BirthDate,
+      email: user.email,
+      gender: user.gender,
+      phone: user.phone,
     };
     res.json(userData);
   } catch (err) {

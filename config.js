@@ -27,7 +27,7 @@ const schema_web = new mongoose.Schema({
     type: String,
     requierd: true,
   },
-  BirthDay: {
+  BirthDate: {
     type: String,
     requierd: true,
   },
