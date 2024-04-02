@@ -1,11 +1,11 @@
 const express = require("express");
 const pasth = require("path");
 const bcrypt = require("bcrypt");
+const User = require("./config");
+const router = express.Router();
 
 const app = express();
 //--------------------------------
-//-------DB----------
-const User = require("./config");
 
 // convert data into json format تحويل البيانات إلى تنسيق json
 app.use(express.json()); //هذا السطر يستخدم middleware من Express.js للمساعدة في تحليل
@@ -17,8 +17,7 @@ app.use(express.static("public"));
 //API
 // register user
 //----signup--------
-
-app.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const userData = {
       FirstName: req.body.FirstName,
@@ -63,7 +62,7 @@ app.post("/signup", async (req, res) => {
 // ---------------------------------------------------------
 //--login---
 //login user
-app.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     // التحقق من وجود اسم المستخدم وكلمة المرور في جسم الطلب
     const { username, password } = req.body;
@@ -107,7 +106,5 @@ app.use(cors());
 const Comprssion = require("compression");
 app.use(Comprssion());
 
-const port = 5000;
-app.listen(port, () => {
-  console.log(`server run port on ${port}`);
-});
+// تصدير الراوتر ليتم استخدامه في الملف الرئيسي
+module.exports = router;
