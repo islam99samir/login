@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Course = require("./dbConnect");
+<<<<<<< HEAD
 const ImageKit = require("imagekit");
 const multer = require("multer");
 
@@ -11,6 +12,9 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.urlEndpoint,
   authenticationEndpoint: process.env.authenticationEndpoint,
 });
+=======
+// mo
+>>>>>>> 94c48f392e07f588144a27afb2ebef6ab4cce925
 
 // إعداد Multer لتحميل الصور
 const storage = multer.diskStorage({
