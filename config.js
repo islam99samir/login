@@ -5,7 +5,7 @@ const path = require("path");
 dot_env.config({ path: path.join(__dirname, ".env") });
 const DB_URL = process.env.DB_URL;
 const connect = mongoose.connect(DB_URL);
-console.log(DB_URL);
+
 connect
   .then(() => {
     console.log("database is connencted");

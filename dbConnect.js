@@ -12,7 +12,7 @@ mongoose.connect(DB_URL)
   .catch((err) => console.error("Database connection failed:", err));
 
 const courseSchema = new mongoose.Schema({
-  Name: {
+  name: {
     type: String,
     required: true,
   },
