@@ -4,6 +4,7 @@ const Course = require("./dbConnect");
 <<<<<<< HEAD
 const ImageKit = require("imagekit");
 const multer = require("multer");
+const fs = require('fs');
 
 // إعداد ImageKit
 const imagekit = new ImageKit({
@@ -69,5 +70,31 @@ router.get("/courses", async (req, res) => {
     res.status(500).send({ error: "فشل في عرض الدورات" });
   }
 });
+
+
+
+router.delete("/delete-image", async (req, res) => 
+    {
+    const courses = img/Screenshot (128).png
+      // قم بفحص ما اذا كان الملف موجود قبل الحزف 
+    if (fs.existsSync(courses))  {
+        fs.unlinkSync(courses);
+        res.send('تم حزف الصورة بنجاح.');
+    }
+
+    else{
+        res.send('الصورة غير موجودة اصلا.')
+    }
+});
+
+router.listen(500, () => {
+    console.log('THE PORT listen 500')
+})
+
+
+//catch (err) {
+    //console.error("خطأ في مسح الصورة:", err);
+    //res.status(500).send("فشل في مسح الصورة.");
+    //}
 
 module.exports = router;
